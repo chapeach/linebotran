@@ -52,7 +52,7 @@ def handleMessage(event):
     answer_message_out = ['ไม่บอก','ถามอะไรหนักหนา','จำเป็นต้องบอกไหม','เหนื่อยที่จะตอบ','ถามดีจริงๆ','ยังจะถามอีกเนาะ']
 
     if user_ID_line == target_ID:
-        no_random = random.randint(1,4)
+        no_random = random.randint(1,2)
         if no_random == 1:
             message_out = random.choice(complimentList())
 
