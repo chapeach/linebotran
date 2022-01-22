@@ -4,6 +4,7 @@ from linebot.models import (MessageEvent, TextMessage, TextSendMessage,)
 from linebot.exceptions import (InvalidSignatureError)
 import pandas as pd
 import random
+from messagelist import *
 
 app = Flask(__name__)
 
@@ -36,58 +37,56 @@ def callback():
     return 'OK'
 
 @handler.add(MessageEvent, message=TextMessage)
-def handle_message(event):
+def handleMessage(event):
 
-    msgIn = event.message.text
-    msgIn = msgIn.upper()
+    message_in = event.message.text
+    message_in = message_in.upper()
 
     print("_"*50)
-    print('msg in = ', msgIn)
-    userIDline = event.source
-    userIDline = str(userIDline)
-    print(userIDline)
+    print('message in = ', message_in)
+    user_ID_line = event.source
+    user_ID_line = str(user_ID_line)
+    print(user_ID_line)
 
-    targetID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram in group line ran
-    answerMsgOut = ['ไม่บอก','ถามอะไรหนักหนา','ควยเปรม','จำเป็นต้องบอกไหม','อยากใส่เดี่ยวกับเปรม','งัดหน้าแม่ง']
-    answerMsg555 = ['ควยเปรม','สัสเปรม','ไม่ต้องพูด','เก๋าหรอเปรม','อยากงัดหน้าเปรมสักที']
-    choiceRandom = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    target_ID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram in group line ran
+    answer_message_out = ['ไม่บอก','ถามอะไรหนักหนา','จำเป็นต้องบอกไหม','เหนื่อยที่จะตอบ','ถามดีจริงๆ','ยังจะถามอีกเนาะ']
 
-    if userIDline == targetID:
-        answerChoiceRandom = random.choice(choiceRandom)
-        if answerChoiceRandom == 10:
-            msgOut = random.choice(answerMsg555)
+    if user_ID_line == target_ID:
+        no_random = random.randint(1,4)
+        if no_random == 1:
+            message_out = random.choice(complimentList())
 
-    if msgIn[0:4] == "RAN." and len(msgIn) == 11:
+    if message_in[0:4] == "RAN." and len(message_in) == 11:
         df = pd.read_csv("db_site_dtac.csv")
 
         try:
-            findDF = df[df["SiteCode"] == msgIn[4:11]]
+            find_DF = df[df["SiteCode"] == message_in[4:11]]
             
-            siteCode = list(findDF["SiteCode"])[0]
-            siteName = list(findDF["SiteName"])[0]
-            latLong = list(findDF["LatLong"])[0]
-            towerOwner = list(findDF["TowerOwner"])[0]
-            towerType = list(findDF["TowerType"])[0]
-            fSO = list(findDF["FSO"])[0]
+            siteCode = list(find_DF["SiteCode"])[0]
+            siteName = list(find_DF["SiteName"])[0]
+            latLong = list(find_DF["LatLong"])[0]
+            towerOwner = list(find_DF["TowerOwner"])[0]
+            towerType = list(find_DF["TowerType"])[0]
+            fSO = list(find_DF["FSO"])[0]
 
-            msgOut = "Site Code : " + siteCode
-            msgOut = msgOut + "\nSite Name : " + siteName
-            msgOut = msgOut + "\nLat Long : " + latLong
-            msgOut = msgOut + "\nTower Owner : " + towerOwner
-            msgOut = msgOut + "\nTower Type : " + towerType
-            msgOut = msgOut + "\nFSO : " + fSO
+            message_out = "Site Code : " + siteCode
+            message_out = message_out + "\nSite Name : " + siteName
+            message_out = message_out + "\nLat Long : " + latLong
+            message_out = message_out + "\nTower Owner : " + towerOwner
+            message_out = message_out + "\nTower Type : " + towerType
+            message_out = message_out + "\nFSO : " + fSO
 
-            if targetID == userIDline:
-                msgOut = random.choice(answerMsgOut)
+            if target_ID == user_ID_line:
+                message_out = random.choice(answer_message_out)
 
         except:
             #print("Error")
             return "Error"
 
         #print("_"*50)
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(msgOut))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(message_out))
         print("_"*50)
-        print(msgOut)
+        print(message_out)
         print("_"*50)
 
 
