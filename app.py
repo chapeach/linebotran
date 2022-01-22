@@ -47,8 +47,15 @@ def handle_message(event):
     userIDline = str(userIDline)
     print(userIDline)
 
-    targetID = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}' #ID line Nesic 2
-    targetID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram ในกลุ่ม ran
+    targetID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram in group line ran
+    answerMsgOut = ['ไม่บอก','ถามอะไรหนักหนา','ควยเปรม','จำเป็นต้องบอกไหม','อยากใส่เดี่ยวกับเปรม','งัดหน้าแม่ง']
+    answerMsg555 = ['ควยเปรม','สัสเปรม','ไม่ต้องพูด','เก๋าหรอเปรม','อยากงัดหน้าเปรมสักที']
+    choiceRandom = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+    if userIDline == targetID:
+        answerChoiceRandom = random.choice(choiceRandom)
+        if answerChoiceRandom == 10:
+            msgOut = random.choice(answerMsg555)
 
     if msgIn[0:4] == "RAN." and len(msgIn) == 11:
         df = pd.read_csv("db_site_dtac.csv")
@@ -71,7 +78,6 @@ def handle_message(event):
             msgOut = msgOut + "\nFSO : " + fSO
 
             if targetID == userIDline:
-                answerMsgOut = ['ไม่บอก','ถามอะไรหนักหนา','ควยเปรม','จำเป็นต้องบอกไหม','อยากใส่เดี่ยวกับเปรม','งัดหน้าแม่ง']
                 msgOut = random.choice(answerMsgOut)
 
         except:
@@ -79,9 +85,7 @@ def handle_message(event):
             return "Error"
 
         #print("_"*50)
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(msgOut))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(msgOut))
         print("_"*50)
         print(msgOut)
         print("_"*50)
