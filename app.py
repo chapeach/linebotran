@@ -47,7 +47,8 @@ def handle_message(event):
     userIDline = str(userIDline)
     print(userIDline)
 
-    targetID = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}'
+    targetID = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}' #ID line Nesic 2
+    targetID = '{"type": "user", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram
 
     if msgIn[0:4] == "RAN." and len(msgIn) == 11:
         df = pd.read_csv("db_site_dtac.csv")
