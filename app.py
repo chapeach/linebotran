@@ -6,6 +6,7 @@ import pandas as pd
 import random
 from messagelist import *
 
+
 app = Flask(__name__)
 
 
@@ -16,6 +17,7 @@ def index():
 
 line_bot_api = LineBotApi('239Nfdlzdog9Sxgv/+wgktJPT1Qv9v5Y2oYgVcZkyefEUqqZP5glXKEneFJx+NbH3igLmfjYzssPoaNnzIOAc2lGQcPpx04VRMqSb7qF9MqbnLlpp6vCtHU6aXZ2pGxZwdD+8qHSoi4YhuENXYjG3wdB04t89/1O/w1cDnyilFU=')
 handler = WebhookHandler('c8b6b3c6cd8160b35da56fe705893ba6')
+
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -49,17 +51,16 @@ def handleMessage(event):
     print(user_ID_line)
 
     target_ID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram in group line ran
-    answer_message_out = ['ไม่บอก','ถามอะไรหนักหนา','จำเป็นต้องบอกไหม','เหนื่อยที่จะตอบ','ถามดีจริงๆ','ยังจะถามอีกเนาะ']
 
-    if user_ID_line == target_ID:
-        no_random = random.randint(1,2)
-        if no_random == 1:
-            message_out = random.choice(complimentList())
+    #{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"} #ID line pram in group line ran
+    #{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"} ID line nesic 2
 
-    if message_in[0:4] == "RAN." and len(message_in) == 11:
-        df = pd.read_csv("db_site_dtac.csv")
+    #target_ID = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}'
 
+
+    def getDetailRan():
         try:
+            df = pd.read_csv("db_site_dtac.csv")
             find_DF = df[df["SiteCode"] == message_in[4:11]]
             
             siteCode = list(find_DF["SiteCode"])[0]
@@ -76,19 +77,28 @@ def handleMessage(event):
             message_out = message_out + "\nTower Type : " + towerType
             message_out = message_out + "\nFSO : " + fSO
 
-            if target_ID == user_ID_line:
-                message_out = random.choice(answer_message_out)
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(message_out))
+            print("_"*50)
+            print(message_out)
+            print("_"*50)
+
 
         except:
             #print("Error")
             return "Error"
 
-        #print("_"*50)
+
+    if user_ID_line == target_ID:
+        message_out = random.choice(msgXpram())
         line_bot_api.reply_message(event.reply_token,TextSendMessage(message_out))
         print("_"*50)
         print(message_out)
         print("_"*50)
 
+        
+    if message_in[0:4] == "RAN." and len(message_in) == 11:
+        getDetailRan()
 
+        
 #if __name__ == "__main__":
-#    app.run(debug=True,port=8000)
+#    app.run(debug=True,port=5000)
