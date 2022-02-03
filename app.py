@@ -1,3 +1,4 @@
+import re
 from flask import Flask, request
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,)
@@ -46,19 +47,15 @@ def handleMessage(event):
 
     print("_"*50)
     print('message in = ', message_in)
-    user_ID_line = event.source
-    user_ID_line = str(user_ID_line)
-    print(user_ID_line)
+    user_id_line = event.source
+    user_id_line = str(user_id_line)
+    print(user_id_line)
 
-    target_ID = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}' #ID line pram in group line ran
-
-    #{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"} #ID line pram in group line ran
-    #{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"} ID line nesic 2
-
-    #target_ID = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}'
-
-
-    def getDetailRan():
+    target_id_pram = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U2e845bc0d067d47ebcc09ccd540e4a20"}'
+    target_id_bee = '{"groupId": "C2216d4bf0d2a09b35789de0f73ecced8", "type": "group", "userId": "U25f07ed87feb94875314f72faa6e64d6"}'
+    target_id_nesic2 = '{"type": "user", "userId": "U1022436d6f4423f7b28e523ecc686e5d"}'
+    
+    def get_detail_ran():
         try:
             df = pd.read_csv("db_site_dtac.csv")
             find_DF = df[df["SiteCode"] == message_in[4:11]]
@@ -82,23 +79,26 @@ def handleMessage(event):
             print(message_out)
             print("_"*50)
 
-
         except:
-            #print("Error")
             return "Error"
 
 
-    if user_ID_line == target_ID:
-        message_out = random.choice(msgXpram())
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(message_out))
-        print("_"*50)
-        print(message_out)
-        print("_"*50)
+    if user_id_line == target_id_pram:
+        message_out = random.choice(msg_out_pram)
 
+    elif user_id_line == target_id_bee:
+        if message_in[0:4] == "RAN." and len(message_in) == 11:
+            get_detail_ran()
         
-    if message_in[0:4] == "RAN." and len(message_in) == 11:
-        getDetailRan()
+        else:
+            message_out = random.choice(msg_out_bee)
 
+    elif message_in[0:4] == "RAN." and len(message_in) == 11:
+        get_detail_ran()
+
+    else:
+        pass
+    
         
 #if __name__ == "__main__":
 #    app.run(debug=True,port=5000)
