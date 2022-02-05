@@ -83,18 +83,33 @@ def handleMessage(event):
             return "Error"
 
 
-    if user_id_line == target_id_pram:
-        message_out = random.choice(msg_out_pram)
+    def msg_out(message_out):
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(message_out))
+        print("_"*50)
+        print(message_out)
+        print("_"*50)
 
-    elif user_id_line == target_id_bee:
-        if message_in[0:4] == "RAN." and len(message_in) == 11:
-            get_detail_ran()
-        
-        else:
-            message_out = random.choice(msg_out_bee)
 
-    elif message_in[0:4] == "RAN." and len(message_in) == 11:
+    message_out = ''
+
+    if message_in[0:4] == "RAN." and len(message_in) == 11:
         get_detail_ran()
+
+    
+    elif user_id_line == target_id_pram:
+        message_out = random.choice(msg_out_pram)
+        msg_out(message_out)
+
+    
+    elif user_id_line == target_id_bee:
+        message_out = random.choice(msg_out_bee)
+        msg_out(message_out)
+
+
+    elif user_id_line == target_id_nesic2:
+        message_out = "KKK"
+        msg_out(message_out)
+
 
     else:
         pass
