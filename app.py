@@ -95,7 +95,7 @@ def handleMessage(event):
     if message_in[0:4] == "RAN." and len(message_in) == 11:
         get_detail_ran()
 
-    
+    '''
     elif user_id_line == target_id_pram:
         message_out = random.choice(msg_out_pram)
         msg_out(message_out)
@@ -110,7 +110,7 @@ def handleMessage(event):
         message_out = "KKK"
         msg_out(message_out)
 
-
+    '''
     else:
         pass
 
