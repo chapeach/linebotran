@@ -93,7 +93,7 @@ def handleMessage(event):
 
     
     elif message_in == 'เทสๆ':
-        msg_out(message_in)
+        msg_out('ดีจ้า')
 
 
     else:
