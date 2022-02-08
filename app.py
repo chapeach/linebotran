@@ -4,8 +4,6 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.models import (MessageEvent, TextMessage, TextSendMessage,)
 from linebot.exceptions import (InvalidSignatureError)
 import pandas as pd
-import random
-from messagelist import *
 
 
 app = Flask(__name__)
@@ -90,29 +88,16 @@ def handleMessage(event):
         print("_"*50)
 
 
-    message_out = ''
-
     if message_in[0:4] == "RAN." and len(message_in) == 11:
         get_detail_ran()
 
-    '''
-    elif user_id_line == target_id_pram:
-        message_out = random.choice(msg_out_pram)
-        msg_out(message_out)
-
     
-    elif user_id_line == target_id_bee:
-        message_out = random.choice(msg_out_bee)
-        msg_out(message_out)
+    elif message_in == 'เทสๆ':
+        msg_out(message_in)
 
 
-    elif user_id_line == target_id_nesic2:
-        message_out = "KKK"
-        msg_out(message_out)
-
-    '''
     else:
-        pass
+        return
 
 
 #if __name__ == "__main__":
